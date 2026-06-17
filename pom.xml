@@ -12,6 +12,7 @@
     <modules>
         <module>velocity</module>
         <module>spigot</module>
+        <module>universal</module>
     </modules>
 
     <properties>

@@ -1,0 +1,34 @@
+# ========================================
+#  AdventureTAB-Spigot v2.1.1 子服配置
+# ========================================
+
+# 与 Velocity 端通信的插件消息频道 (需与 Velocity 端 config.yml 一致)
+channel: "adventuretab:data"
+
+# 是否推送玩家手持物品变化
+send-item-updates: true
+
+# 是否推送表情符号使用
+send-emoji-updates: true
+
+# 事件节流 (毫秒)
+throttle-ms: 500
+
+# ===== PlaceholderAPI 桥接 =====
+# 将 Spigot 端的 PAPI 占位符解析结果转发到 Velocity
+# 用于 groups.yml / config.yml 中使用 Spigot 端占位符
+placeholderapi-bridge:
+  enabled: true
+  # 需要桥接的占位符列表 (不需要加 %)
+  placeholders:
+    - "adventureprefix_prefix"
+    - "af_tab_prefix"
+    - "af_tab_suffix"
+    - "af_tab_sort"
+    - "af_tab_status"
+    - "af_status"
+    - "af_friends_online"
+    - "af_party_size"
+    - "af_server"
+  # 刷新间隔 (tick, 20tick=1秒)
+  refresh-interval: 10

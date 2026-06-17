@@ -1,0 +1,153 @@
+# ========================================
+#  AdventureTAB v2.1.1 配置
+#  对标 TAB 插件功能 + CraftEngine 集成
+# ========================================
+
+# ===== Header/Footer (多设计 + 条件切换) =====
+# 设计从上往下检查，匹配第一个满足条件的设计
+# 无条件的设计作为默认兜底
+header-footer:
+  enabled: true
+  # Header 顶部空行填充数量
+  # 用于将 TAB 内容下推，为 BossBar 等 HUD 元素留出空间
+  # 0 = 不填充, 1-3 = 推荐值 (根据 BossBar 高度调整)
+  header-top-padding: 0
+  designs:
+    # 示例: 特定服务器的设计
+    lobby-design:
+      display-condition: "%server%=lobby"
+      header:
+        - "&6&m                                                "
+        - "&e&l✦ &6&lAdventure Network &e&l✦"
+        - "&7欢迎来到大厅, &a%player%"
+        - ""
+      footer:
+        - ""
+        - "&7在线: &f%online% &8| &7Ping: &f%ping%ms"
+        - "&6&m                                                "
+    # 默认设计 (无条件 = 兜底)
+    default:
+      header:
+        - "&6&m                                                "
+        - "&e&l✦ &6&lAdventure Network &e&l✦"
+        - "&7你好, &a%player% &8| &7服务器: &e%server%"
+        - ""
+      footer:
+        - ""
+        - "&7在线: &f%online% &8| &7Ping: &f%ping%ms"
+        - "%animation:barcolors%"
+        - "&6&m                                                "
+
+# ===== TabList 名称格式化 =====
+# 从 groups.yml 读取 tabprefix / customtabname / tabsuffix
+tablist-name-formatting:
+  enabled: true
+  disable-condition: ""
+
+# ===== AdventureFriend per-viewer 社交标识 =====
+# 由 AdventureFriend 子服插件推送 viewer -> target 关系，Velocity 端按观看者单独渲染。
+adventurefriend-social:
+  enabled: true
+  friend-prefix: "&c❤ "
+  request-prefix: "&e? "
+  blocked-prefix: "&8X "
+
+# ===== 排序 (对标 TAB scoreboard-teams) =====
+# 支持: GROUPS, PLACEHOLDER_A_TO_Z, PLACEHOLDER_Z_TO_A,
+#        PLACEHOLDER_LOW_TO_HIGH, PLACEHOLDER_HIGH_TO_LOW
+scoreboard-teams:
+  enabled: true
+  sorting-types:
+    - "GROUPS:owner,admin,mod,helper,builder,vip,default"
+    - "PLACEHOLDER_A_TO_Z:%af_tab_sort%"
+    - "PLACEHOLDER_A_TO_Z:%player%"
+  case-sensitive-sorting: true
+
+# ===== 全局玩家列表 (跨服可见性) =====
+global-playerlist:
+  enabled: false
+  display-others-as-spectators: false
+  display-vanished-players-as-spectators: true
+  isolate-unlisted-servers: false
+  update-latency: false
+  spy-servers:
+    - spyserver1
+  server-groups:
+    lobbies:
+      - lobby1
+      - lobby2
+    survival:
+      - survival1
+      - survival2
+
+# ===== CraftEngine 集成 =====
+craftengine:
+  enable-integration: true
+  display-custom-item: true
+  emoji-support: true
+  max-texture-cache-size: 200
+  channel: "adventuretab:data"
+
+# ===== LuckPerms 配置 =====
+luckperms:
+  enable: true
+  default-weight: 0
+  cache-duration: 10
+
+# ===== 性能配置 =====
+performance:
+  throttle-ms: 500
+  texture-cache-duration: 60
+  update-interval: 5
+
+# ===== 占位符设置 =====
+placeholders:
+  date-format: "yyyy-MM-dd"
+  time-format: "HH:mm:ss"
+
+# ===== 条件占位符 =====
+# 使用 %condition:name% 引用
+conditions:
+  vip-tag:
+    conditions:
+      - "%group%=vip"
+    "true": "&6[VIP] "
+    "false": ""
+
+# ===== 占位符输出替换 =====
+placeholder-output-replacements:
+  "%group%":
+    default: "&7玩家"
+    admin: "&c管理员"
+    mod: "&9模组"
+    vip: "&6VIP"
+
+# ===== 动画 =====
+# 使用 %animation:name% 引用
+animations:
+  barcolors:
+    texts:
+      - "&c━━━━━&6━━━━━&e━━━━━&a━━━━━&b━━━━━"
+      - "&6━━━━━&e━━━━━&a━━━━━&b━━━━━&c━━━━━"
+      - "&e━━━━━&a━━━━━&b━━━━━&c━━━━━&6━━━━━"
+      - "&a━━━━━&b━━━━━&c━━━━━&6━━━━━&e━━━━━"
+      - "&b━━━━━&c━━━━━&6━━━━━&e━━━━━&a━━━━━"
+    interval: 200
+  Welcome:
+    texts:
+      - "&6Welcome to"
+      - "&eWelcome to"
+      - "&aWelcome to"
+    interval: 500
+
+# ===== CustomNameplates 兼容 =====
+# 启用后，CNP 的 BossBar 文字会自动嵌入 TAB Header 顶部
+# 按 TAB 时，BossBar 内容显示在 TAB 覆盖层之上
+# 需要子服安装 AdventureTAB-Spigot 伴生插件
+customnameplates-compat:
+  # 仅在 BossBar 被 TAB 遮挡时才需要启用 (低版本客户端)
+  # 现代 MC 版本中 BossBar 已在 TAB 之上，无需开启
+  enabled: false
+
+# ===== 调试模式 =====
+debug: false
