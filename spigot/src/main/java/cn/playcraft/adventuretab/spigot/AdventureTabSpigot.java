@@ -82,7 +82,7 @@ public class AdventureTabSpigot extends JavaPlugin implements Listener {
             }, 20L);
         }
 
-        getLogger().info("[AdventureTAB-Spigot] v2.1.1 已启用"
+        getLogger().info("[AdventureTAB-Spigot] v2.1.2 已启用"
                 + (craftEngineHook.isAvailable() ? " (CraftEngine 已连接)" : ""));
     }
 

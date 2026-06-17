@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import com.google.inject.Inject;
 import java.nio.file.Path;
 
-@Plugin(id = "adventuretab", name = "AdventureTAB", version = "2.1.1",
+@Plugin(id = "adventuretab", name = "AdventureTAB", version = "2.1.2",
         description = "跨服TabList管理 - CraftEngine & LuckPerms 集成",
         authors = {"PlayCraft"},
         dependencies = {
@@ -119,7 +119,7 @@ public class AdventureTab {
         // 13. 注册命令
         registerCommands();
 
-        logger.info("[AdventureTAB] v2.1.1 已启用 (设计: {}, 排序: {}, 全局列表: {})",
+        logger.info("[AdventureTAB] v2.1.2 已启用 (设计: {}, 排序: {}, 全局列表: {})",
                 configManager.getHeaderFooterDesigns().size(),
                 configManager.getSortingTypes().size(),
                 configManager.isGlobalPlayerListEnabled() ? "启用" : "禁用");
