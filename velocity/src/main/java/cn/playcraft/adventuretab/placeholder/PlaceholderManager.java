@@ -185,6 +185,10 @@ public class PlaceholderManager {
             }
         }
 
+        if (key.equalsIgnoreCase("adventureprefix_prefix")) {
+            return "";
+        }
+
         // 未识别的占位符原样返回
         return "%" + key + "%";
     }

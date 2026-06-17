@@ -4,8 +4,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class SpigotConfigManager {
+
+    private static final String ADVENTURE_PREFIX_PLACEHOLDER = "adventureprefix_prefix";
 
     private final JavaPlugin plugin;
 
@@ -34,8 +37,26 @@ public class SpigotConfigManager {
 
         // PAPI 桥接
         papiBridgeEnabled = plugin.getConfig().getBoolean("placeholderapi-bridge.enabled", true);
-        papiPlaceholders = plugin.getConfig().getStringList("placeholderapi-bridge.placeholders");
+        papiPlaceholders = new ArrayList<>(plugin.getConfig().getStringList("placeholderapi-bridge.placeholders"));
+        ensureAdventurePrefixPlaceholder();
         papiRefreshTicks = plugin.getConfig().getInt("placeholderapi-bridge.refresh-interval", 10);
+    }
+
+    private void ensureAdventurePrefixPlaceholder() {
+        boolean exists = papiPlaceholders.stream()
+                .anyMatch(SpigotConfigManager::isAdventurePrefixPlaceholder);
+        if (!exists) {
+            papiPlaceholders.add(ADVENTURE_PREFIX_PLACEHOLDER);
+        }
+    }
+
+    private static boolean isAdventurePrefixPlaceholder(String placeholder) {
+        if (placeholder == null) return false;
+        String normalized = placeholder.trim();
+        if (normalized.startsWith("%") && normalized.endsWith("%") && normalized.length() > 1) {
+            normalized = normalized.substring(1, normalized.length() - 1);
+        }
+        return ADVENTURE_PREFIX_PLACEHOLDER.equals(normalized.toLowerCase(Locale.ROOT));
     }
 
     public String getChannel() { return channel; }

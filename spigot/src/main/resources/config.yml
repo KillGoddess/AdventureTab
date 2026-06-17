@@ -21,6 +21,7 @@ placeholderapi-bridge:
   enabled: true
   # 需要桥接的占位符列表 (不需要加 %)
   placeholders:
+    - "adventureprefix_prefix"
     - "af_tab_prefix"
     - "af_tab_suffix"
     - "af_tab_sort"
