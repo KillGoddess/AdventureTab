@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdventureTAB Wiki - v1.0.0</title>
+    <style>
+        :root {
+            --bg: #0f1117;
+            --card: #1a1d27;
+            --border: #2a2d3a;
+            --text: #e0e0e0;
+            --text-muted: #8b8fa3;
+            --accent: #fbbf24;
+            --accent2: #60a5fa;
+            --green: #34d399;
+            --red: #f87171;
+            --purple: #a78bfa;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+        h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle { color: var(--text-muted); font-size: 1rem; margin-bottom: 2rem; }
+        h2 {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin: 2.5rem 0 1rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid var(--border);
+        }
+        h3 { font-size: 1.1rem; color: var(--accent2); margin: 1.5rem 0 0.6rem; }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; }
+        th, td {
+            text-align: left;
+            padding: 0.5rem 0.8rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.92rem;
+        }
+        th { color: var(--accent); font-weight: 600; white-space: nowrap; }
+        code, .code {
+            background: #252836;
+            color: var(--green);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.88rem;
+        }
+        pre {
+            background: #252836;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text);
+            margin: 0.6rem 0;
+        }
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+        .tag-velocity { background: #1e3a5f; color: #60a5fa; }
+        .tag-lp { background: #3b1f4e; color: #a78bfa; }
+        .tag-ce { background: #1f3d2e; color: #34d399; }
+        .tag-opt { background: #3d2e1f; color: #fbbf24; }
+        ul { padding-left: 1.5rem; margin: 0.4rem 0; }
+        li { margin-bottom: 0.3rem; }
+        .badge {
+            display: inline-block;
+            padding: 1px 7px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            vertical-align: middle;
+        }
+        .badge-required { background: #7f1d1d; color: #fca5a5; }
+        .badge-optional { background: #1e3a5f; color: #93c5fd; }
+        .toc { columns: 2; column-gap: 2rem; }
+        .toc a { color: var(--accent2); text-decoration: none; display: block; padding: 2px 0; }
+        .toc a:hover { color: var(--accent); }
+        .flow { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin: 0.8rem 0; }
+        .flow-item { background: #252836; padding: 4px 12px; border-radius: 6px; font-size: 0.88rem; }
+        .flow-arrow { color: var(--accent); font-weight: bold; }
+        .note {
+            background: #1e293b;
+            border-left: 3px solid var(--accent2);
+            padding: 0.8rem 1rem;
+            border-radius: 0 6px 6px 0;
+            margin: 0.8rem 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+<h1>AdventureTAB</h1>
+<p class="subtitle">
+    Velocity 跨服 TabList 管理插件 · v1.0.0 · 
+    <span class="tag tag-velocity">Velocity 3.4.0+</span>
+    <span class="tag tag-lp">LuckPerms</span>
+    <span class="tag tag-ce">CraftEngine</span>
+</p>
+
+<!-- 目录 -->
+<div class="card">
+    <h3>目录</h3>
+    <div class="toc">
+        <a href="#overview">1. 功能概览</a>
+        <a href="#architecture">2. 核心架构</a>
+        <a href="#install">3. 安装部署</a>
+        <a href="#config">4. 配置文件</a>
+        <a href="#commands">5. 命令</a>
+        <a href="#permissions">6. 权限</a>
+        <a href="#luckperms">7. LuckPerms 集成</a>
+        <a href="#craftengine">8. CraftEngine 集成</a>
+        <a href="#protocol">9. 插件消息协议</a>
+        <a href="#placeholders">10. 占位符</a>
+        <a href="#performance">11. 性能优化</a>
+        <a href="#changelog">12. 更新日志</a>
+    </div>
+</div>
+
+<!-- 1. 功能概览 -->
+<h2 id="overview">1. 功能概览</h2>
+<div class="card">
+    <ul>
+        <li><strong>跨服 TabList</strong> - 自动显示所有 Velocity 子服务器在线玩家</li>
+        <li><strong>权限排序</strong> - 基于 LuckPerms 权限组权重自动排序</li>
+        <li><strong>CraftEngine 物品图标</strong> - 在玩家名旁显示手持自定义物品纹理</li>
+        <li><strong>表情符号支持</strong> - CraftEngine 自定义表情嵌入显示名</li>
+        <li><strong>MiniMessage 格式</strong> - Header/Footer/显示名全面支持 MiniMessage + Legacy 颜色码</li>
+        <li><strong>Caffeine 高性能缓存</strong> - 权限权重 10分钟、纹理 1小时过期</li>
+        <li><strong>节流机制</strong> - 500ms 高频事件防抖，避免 TabList 频繁刷新</li>
+        <li><strong>配置回滚</strong> - 配置文件加载失败时自动使用内置默认配置</li>
+    </ul>
+</div>
+
+<!-- 2. 核心架构 -->
+<h2 id="architecture">2. 核心架构</h2>
+<div class="card">
+    <h3>模块划分</h3>
+    <table>
+        <tr><th>模块</th><th>类</th><th>职责</th></tr>
+        <tr><td>主入口</td><td><code>AdventureTab</code></td><td>Velocity 插件生命周期、模块初始化、命令注册</td></tr>
+        <tr><td>配置管理</td><td><code>ConfigManager</code></td><td>YAML 配置加载、默认值回滚、热重载</td></tr>
+        <tr><td>TabList 管理</td><td><code>TabListManager</code></td><td>Header/Footer、跨服条目同步、显示名构建、排序</td></tr>
+        <tr><td>定时更新</td><td><code>TabListUpdater</code></td><td>ScheduledExecutorService 定期刷新</td></tr>
+        <tr><td>权限排序</td><td><code>LuckPermsHook</code></td><td>LuckPerms API 集成、权重解析、前缀后缀</td></tr>
+        <tr><td>CraftEngine</td><td><code>CraftEngineHook</code></td><td>插件消息接收、物品/纹理/表情数据处理</td></tr>
+        <tr><td>缓存管理</td><td><code>CacheManager</code></td><td>Caffeine 三级缓存（权重/纹理/物品）</td></tr>
+        <tr><td>节流管理</td><td><code>ThrottleManager</code></td><td>UUID 级别 ConcurrentHashMap 时间戳防抖</td></tr>
+        <tr><td>事件监听</td><td><code>PlayerEventListener</code></td><td>ServerConnected / Disconnect 事件处理</td></tr>
+        <tr><td>命令</td><td><code>MainCommand</code></td><td>/adventuretab (atab) 命令</td></tr>
+    </table>
+</div>
+
+<div class="card">
+    <h3>数据流</h3>
+    <div class="flow">
+        <span class="flow-item">后端服务器 (CraftEngine)</span>
+        <span class="flow-arrow">→ 插件消息 →</span>
+        <span class="flow-item">Velocity (AdventureTAB)</span>
+        <span class="flow-arrow">→ TabList →</span>
+        <span class="flow-item">客户端</span>
+    </div>
+    <div class="flow">
+        <span class="flow-item">LuckPerms API</span>
+        <span class="flow-arrow">→ 权重/前缀 →</span>
+        <span class="flow-item">CacheManager</span>
+        <span class="flow-arrow">→ 排序 →</span>
+        <span class="flow-item">TabListEntry</span>
+    </div>
+</div>
+
+<!-- 3. 安装 -->
+<h2 id="install">3. 安装部署</h2>
+<div class="card">
+    <h3>前置要求</h3>
+    <table>
+        <tr><th>组件</th><th>版本</th><th>必要性</th></tr>
+        <tr><td>Velocity</td><td>3.4.0+</td><td><span class="badge badge-required">必须</span></td></tr>
+        <tr><td>Java</td><td>21+</td><td><span class="badge badge-required">必须</span></td></tr>
+        <tr><td>LuckPerms</td><td>5.4+</td><td><span class="badge badge-optional">可选</span></td></tr>
+        <tr><td>CraftEngine</td><td>1.21+</td><td><span class="badge badge-optional">可选</span></td></tr>
+        <tr><td>Paper / Purpur</td><td>1.21+</td><td><span class="badge badge-optional">后端服务器</span></td></tr>
+    </table>
+
+    <h3>安装步骤</h3>
+    <ol>
+        <li>将 <code>AdventureTAB-1.0.0.jar</code> 放入 Velocity 的 <code>plugins/</code> 目录</li>
+        <li>启动 Velocity，插件自动生成 <code>plugins/adventuretab/config.yml</code></li>
+        <li>编辑配置文件，按需启用 LuckPerms / CraftEngine 集成</li>
+        <li>执行 <code>/atab reload</code> 或重启 Velocity</li>
+    </ol>
+</div>
+
+<!-- 4. 配置文件 -->
+<h2 id="config">4. 配置文件</h2>
+<div class="card">
+    <h3>config.yml</h3>
+<pre># TabList 设置
+tablist:
+  header: "&lt;gradient:gold:yellow&gt;Adventure Network&lt;/gradient&gt;"
+  footer: "在线玩家: %velocity_total_players%"
+  sort-by-permission-weight: true    # 按权限权重排序
+  update-interval: 5                 # 定时更新间隔 (秒)
+  name-format: "{prefix} {player}"   # 玩家名格式
+  server-format: " &amp;7[{server}]"     # 服务器后缀格式
+  show-server-suffix: false          # 是否显示服务器后缀
+
+# CraftEngine 集成
+craftengine:
+  enable-integration: true
+  display-custom-item: true          # 显示手持物品图标
+  emoji-support: true                # 表情符号支持
+  max-texture-cache-size: 200        # 纹理缓存上限
+  channel: "adventuretab:data"       # 插件消息频道
+
+# LuckPerms 配置
+luckperms:
+  enable: true
+  default-weight: 0                  # 默认权重
+  cache-duration: 10                 # 权重缓存 (分钟)
+
+# 性能配置
+performance:
+  throttle-ms: 500                   # 事件节流 (毫秒)
+  texture-cache-duration: 60         # 纹理缓存 (分钟)</pre>
+</div>
+
+<div class="card">
+    <h3>配置字段详解</h3>
+    <table>
+        <tr><th>字段</th><th>类型</th><th>默认</th><th>说明</th></tr>
+        <tr><td><code>tablist.header</code></td><td>String</td><td>渐变标题</td><td>TabList 顶部文本，支持 MiniMessage</td></tr>
+        <tr><td><code>tablist.footer</code></td><td>String</td><td>在线人数</td><td>TabList 底部文本</td></tr>
+        <tr><td><code>tablist.sort-by-permission-weight</code></td><td>Boolean</td><td>true</td><td>启用权限权重排序</td></tr>
+        <tr><td><code>tablist.update-interval</code></td><td>Integer</td><td>5</td><td>全局定时刷新间隔（秒）</td></tr>
+        <tr><td><code>tablist.name-format</code></td><td>String</td><td>{prefix} {player}</td><td>显示名格式，支持 {prefix} {suffix} {player} {group}</td></tr>
+        <tr><td><code>tablist.show-server-suffix</code></td><td>Boolean</td><td>false</td><td>显示玩家所在服务器名</td></tr>
+        <tr><td><code>craftengine.enable-integration</code></td><td>Boolean</td><td>true</td><td>启用 CraftEngine 集成</td></tr>
+        <tr><td><code>craftengine.channel</code></td><td>String</td><td>adventuretab:data</td><td>与后端服务器通信的频道标识</td></tr>
+        <tr><td><code>luckperms.cache-duration</code></td><td>Integer</td><td>10</td><td>权限权重缓存过期时间（分钟）</td></tr>
+        <tr><td><code>performance.throttle-ms</code></td><td>Integer</td><td>500</td><td>高频事件防抖间隔（毫秒）</td></tr>
+        <tr><td><code>performance.texture-cache-duration</code></td><td>Integer</td><td>60</td><td>纹理 Base64 缓存过期（分钟）</td></tr>
+    </table>
+</div>
+
+<!-- 5. 命令 -->
+<h2 id="commands">5. 命令</h2>
+<div class="card">
+    <table>
+        <tr><th>命令</th><th>别名</th><th>权限</th><th>说明</th></tr>
+        <tr><td><code>/adventuretab</code></td><td><code>/atab</code></td><td>adventuretab.use</td><td>主命令，显示帮助</td></tr>
+        <tr><td><code>/atab reload</code></td><td>-</td><td>adventuretab.admin</td><td>重载配置、刷新缓存、重建 TabList</td></tr>
+        <tr><td><code>/atab info</code></td><td>-</td><td>adventuretab.use</td><td>查看运行状态（在线数、LP/CE 连接状态）</td></tr>
+    </table>
+</div>
+
+<!-- 6. 权限 -->
+<h2 id="permissions">6. 权限</h2>
+<div class="card">
+    <table>
+        <tr><th>权限节点</th><th>默认</th><th>说明</th></tr>
+        <tr><td><code>adventuretab.use</code></td><td>OP</td><td>使用 /atab 命令</td></tr>
+        <tr><td><code>adventuretab.admin</code></td><td>OP</td><td>执行 reload 等管理操作</td></tr>
+    </table>
+</div>
+
+<!-- 7. LuckPerms 集成 -->
+<h2 id="luckperms">7. LuckPerms 集成</h2>
+<div class="card">
+    <h3>排序原理</h3>
+    <p>通过 <code>LuckPermsProvider</code> 获取玩家主权限组的 <code>weight</code> 元数据，权重值作为 TabList 的 <code>listOrder</code> 参数。
+    权重越高的玩家排在 TabList 越靠前。</p>
+
+    <h3>权重解析优先级</h3>
+    <ol>
+        <li>玩家 meta 中的 <code>weight</code> 键值</li>
+        <li>玩家主权限组 (<code>primaryGroup</code>) 的 <code>group.weight</code></li>
+        <li>配置文件中的 <code>luckperms.default-weight</code> 默认值</li>
+    </ol>
+
+    <h3>动态更新</h3>
+    <p>插件订阅 LuckPerms 的 <code>UserDataRecalculateEvent</code>，当玩家权限数据发生变化时自动更新缓存和 TabList 条目。</p>
+
+    <h3>显示名占位符</h3>
+    <table>
+        <tr><th>占位符</th><th>来源</th><th>说明</th></tr>
+        <tr><td><code>{prefix}</code></td><td>LP CachedMetaData</td><td>玩家当前前缀</td></tr>
+        <tr><td><code>{suffix}</code></td><td>LP CachedMetaData</td><td>玩家当前后缀</td></tr>
+        <tr><td><code>{group}</code></td><td>LP Group displayName</td><td>主权限组显示名</td></tr>
+    </table>
+</div>
+
+<!-- 8. CraftEngine 集成 -->
+<h2 id="craftengine">8. CraftEngine 集成</h2>
+<div class="card">
+    <h3>实现方式</h3>
+    <p>由于 CraftEngine 运行在后端 Bukkit 服务器上，AdventureTAB 通过 <strong>Velocity 插件消息频道</strong> 
+    (<code>adventuretab:data</code>) 接收后端服务器推送的数据。</p>
+
+    <h3>功能说明</h3>
+    <table>
+        <tr><th>功能</th><th>配置键</th><th>说明</th></tr>
+        <tr><td>物品图标</td><td><code>display-custom-item</code></td><td>在玩家名旁显示手持自定义物品的纹理图标</td></tr>
+        <tr><td>表情符号</td><td><code>emoji-support</code></td><td>将聊天中使用的自定义表情同步到 TabList</td></tr>
+        <tr><td>纹理缓存</td><td><code>max-texture-cache-size</code></td><td>限制缓存的 Base64 纹理数量</td></tr>
+    </table>
+
+    <div class="note">
+        <strong>注意：</strong>CraftEngine 集成需要在后端服务器安装配套的数据推送插件/模块，
+        通过 <code>adventuretab:data</code> 频道向 Velocity 发送物品/纹理/表情数据。
+    </div>
+</div>
+
+<!-- 9. 协议 -->
+<h2 id="protocol">9. 插件消息协议</h2>
+<div class="card">
+    <h3>频道: <code>adventuretab:data</code></h3>
+    <table>
+        <tr><th>类型ID</th><th>名称</th><th>数据格式</th><th>方向</th></tr>
+        <tr>
+            <td><code>0x01</code></td>
+            <td>物品更新</td>
+            <td><code>[byte 0x01][long msb][long lsb][utf itemModel]</code></td>
+            <td>后端 → Velocity</td>
+        </tr>
+        <tr>
+            <td><code>0x02</code></td>
+            <td>纹理数据</td>
+            <td><code>[byte 0x02][utf textureKey][utf base64Data]</code></td>
+            <td>后端 → Velocity</td>
+        </tr>
+        <tr>
+            <td><code>0x03</code></td>
+            <td>表情数据</td>
+            <td><code>[byte 0x03][long msb][long lsb][utf emojiId]</code></td>
+            <td>后端 → Velocity</td>
+        </tr>
+    </table>
+
+    <h3>字段说明</h3>
+    <ul>
+        <li><strong>msb / lsb</strong> - 玩家 UUID 的 mostSignificantBits / leastSignificantBits</li>
+        <li><strong>itemModel</strong> - CraftEngine <code>item_model</code> 纹理路径标识</li>
+        <li><strong>textureKey</strong> - 纹理唯一键，与 itemModel 对应</li>
+        <li><strong>base64Data</strong> - 纹理图片的 Base64 编码</li>
+        <li><strong>emojiId</strong> - CraftEngine 自定义表情符号 ID</li>
+    </ul>
+</div>
+
+<!-- 10. 占位符 -->
+<h2 id="placeholders">10. 占位符</h2>
+<div class="card">
+    <h3>Header / Footer 占位符</h3>
+    <table>
+        <tr><th>占位符</th><th>说明</th></tr>
+        <tr><td><code>%velocity_total_players%</code></td><td>Velocity 全网在线玩家总数</td></tr>
+        <tr><td><code>%player_name%</code></td><td>当前玩家名</td></tr>
+        <tr><td><code>%player_server%</code></td><td>当前玩家所在服务器名</td></tr>
+    </table>
+
+    <h3>显示名格式占位符</h3>
+    <table>
+        <tr><th>占位符</th><th>来源</th><th>说明</th></tr>
+        <tr><td><code>{prefix}</code></td><td>LuckPerms</td><td>玩家前缀</td></tr>
+        <tr><td><code>{suffix}</code></td><td>LuckPerms</td><td>玩家后缀</td></tr>
+        <tr><td><code>{player}</code></td><td>Velocity</td><td>玩家名</td></tr>
+        <tr><td><code>{group}</code></td><td>LuckPerms</td><td>权限组显示名</td></tr>
+        <tr><td><code>{server}</code></td><td>Velocity</td><td>所在服务器名（需开启 show-server-suffix）</td></tr>
+    </table>
+</div>
+
+<!-- 11. 性能 -->
+<h2 id="performance">11. 性能优化</h2>
+<div class="card">
+    <h3>缓存策略</h3>
+    <table>
+        <tr><th>缓存类型</th><th>引擎</th><th>过期时间</th><th>最大容量</th><th>说明</th></tr>
+        <tr><td>权限权重</td><td>Caffeine</td><td>10 分钟</td><td>500</td><td>减少 LuckPerms API 调用</td></tr>
+        <tr><td>纹理 Base64</td><td>Caffeine</td><td>1 小时</td><td>200</td><td>减少重复纹理传输</td></tr>
+        <tr><td>玩家物品模型</td><td>Caffeine</td><td>5 分钟</td><td>500</td><td>缓存当前手持物品信息</td></tr>
+    </table>
+
+    <h3>节流处理</h3>
+    <p>对高频事件（如玩家切换服务器、物品装备变更）设置 <strong>500ms</strong> 节流间隔，
+    使用 <code>ConcurrentHashMap&lt;UUID, Long&gt;</code> 记录每个玩家上次触发时间戳。</p>
+
+    <h3>资源自动清理</h3>
+    <ul>
+        <li>Velocity 代理关闭时：清空所有缓存、注销事件监听器、关闭 ScheduledExecutorService 线程池</li>
+        <li>玩家断开连接时：移除该玩家的权重缓存和物品缓存</li>
+        <li>配置重载时：全部缓存失效，重新构建</li>
+    </ul>
+
+    <h3>异常处理</h3>
+    <ul>
+        <li>所有 CraftEngine / LuckPerms API 调用包裹 <code>try-catch</code>，捕获异常时降级显示默认玩家名</li>
+        <li>配置文件加载失败时自动使用内置默认配置，确保插件可启动</li>
+        <li>通过 Velocity 的 <code>Logger</code> 输出分级日志，DEBUG 级记录权重计算和纹理转换过程</li>
+    </ul>
+</div>
+
+<!-- 12. 更新日志 -->
+<h2 id="changelog">12. 更新日志</h2>
+<div class="card">
+    <h3>v1.0.0 <span style="color:var(--text-muted);font-size:0.85rem;">(2025-04-12)</span></h3>
+    <ul>
+        <li><span class="tag tag-velocity">新增</span> 基于 Velocity 3.4.0+ 的跨服 TabList 管理</li>
+        <li><span class="tag tag-lp">新增</span> LuckPerms 权限权重排序 + 前缀/后缀/组名显示</li>
+        <li><span class="tag tag-ce">新增</span> CraftEngine 物品图标 + 表情符号集成（插件消息协议）</li>
+        <li><span class="tag tag-opt">新增</span> Caffeine 三级缓存 + 500ms 事件节流</li>
+        <li><span class="tag tag-velocity">新增</span> MiniMessage + Legacy 颜色码双重解析</li>
+        <li><span class="tag tag-velocity">新增</span> 配置热重载 <code>/atab reload</code></li>
+        <li><span class="tag tag-opt">新增</span> 配置加载失败自动回滚至内置默认值</li>
+    </ul>
+</div>
+
+</div>
+</body>
+</html>

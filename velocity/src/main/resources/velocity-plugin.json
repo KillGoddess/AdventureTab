@@ -1,0 +1,11 @@
+{
+  "id": "adventuretab",
+  "name": "AdventureTAB",
+  "version": "2.1.0",
+  "description": "跨服TabList管理 - CraftEngine & LuckPerms 集成",
+  "authors": ["PlayCraft"],
+  "main": "cn.playcraft.adventuretab.AdventureTab",
+  "dependencies": [
+    {"id": "luckperms", "optional": true}
+  ]
+}

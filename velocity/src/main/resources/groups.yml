@@ -1,0 +1,52 @@
+# ========================================
+#  AdventureTAB groups.yml
+#  对标 TAB groups.yml - 按权限组设置 TabList 属性
+# ========================================
+# 属性: tabprefix, customtabname, tabsuffix
+# 支持 %placeholder% 占位符
+
+# 特定组配置
+owner:
+  tabprefix: "&4&l[Owner] &c"
+  customtabname: "%player%"
+  tabsuffix: ""
+
+admin:
+  tabprefix: "&c&l[Admin] &c"
+  customtabname: "%player%"
+  tabsuffix: ""
+
+mod:
+  tabprefix: "&9&l[Mod] &9"
+  customtabname: "%player%"
+  tabsuffix: ""
+
+helper:
+  tabprefix: "&e[Helper] &e"
+  customtabname: "%player%"
+  tabsuffix: ""
+
+vip:
+  tabprefix: "&6[VIP] &6"
+  customtabname: "%player%"
+  tabsuffix: ""
+
+player:
+  tabprefix: "&7"
+  customtabname: "%player%"
+  tabsuffix: ""
+
+# 默认配置 - 所有未匹配的组使用此配置
+_DEFAULT_:
+  tabprefix: "%af_tab_prefix%%adventuremedal_use%%luckperms-prefix%"
+  customtabname: "%player%"
+  tabsuffix: "%luckperms-suffix%%af_tab_suffix%"
+
+# per-server 覆盖 - 特定服务器下的组属性覆盖
+per-server:
+  lobby:
+    admin:
+      tabprefix: "&c&l[大厅管理] &c"
+#  survival:
+#    vip:
+#      tabprefix: "&6&l[生存VIP] &6"

@@ -1,0 +1,7 @@
+name: AdventureTAB-Spigot
+version: '2.1.0'
+main: cn.playcraft.adventuretab.spigot.AdventureTabSpigot
+api-version: '1.21'
+description: AdventureTAB 子服伴生插件 - CraftEngine / CustomNameplates 兼容
+authors: [PlayCraft]
+softdepend: [CraftEngine, CustomNameplates, PlaceholderAPI]

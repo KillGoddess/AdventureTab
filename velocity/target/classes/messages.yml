@@ -1,0 +1,17 @@
+# AdventureTAB 消息配置 - 支持 MiniMessage 格式
+# 修改后 /atab reload 即可热加载
+
+cmd-help-header: "<gold>[AdventureTAB] v2.1.0"
+cmd-help-reload: "<yellow>  /atab reload - 重载配置"
+cmd-help-info: "<yellow>  /atab info   - 查看状态"
+cmd-no-permission: "<red>无权限执行此命令"
+cmd-reloaded: "<green>[AdventureTAB] 配置已重载"
+cmd-unknown: "<red>[AdventureTAB] 未知子命令: {0}"
+
+info-header: "<gold>[AdventureTAB] 运行状态"
+info-online: "<aqua>  在线玩家: {0}"
+info-servers: "<aqua>  服务器数: {0}"
+info-luckperms: "  LuckPerms: {0}"
+info-craftengine: "  CraftEngine: {0}"
+info-connected: "<green>已连接"
+info-disconnected: "<red>未连接"
