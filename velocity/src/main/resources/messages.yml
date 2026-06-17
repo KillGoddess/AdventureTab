@@ -1,7 +1,7 @@
 # AdventureTAB 消息配置 - 支持 MiniMessage 格式
 # 修改后 /atab reload 即可热加载
 
-cmd-help-header: "<gold>[AdventureTAB] v2.1.0"
+cmd-help-header: "<gold>[AdventureTAB] v2.1.1"
 cmd-help-reload: "<yellow>  /atab reload - 重载配置"
 cmd-help-info: "<yellow>  /atab info   - 查看状态"
 cmd-no-permission: "<red>无权限执行此命令"
