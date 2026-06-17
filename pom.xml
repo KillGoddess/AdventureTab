@@ -6,12 +6,13 @@
 
     <groupId>cn.playcraft</groupId>
     <artifactId>AdventureTAB-Parent</artifactId>
-    <version>2.1.0</version>
+    <version>2.1.2</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>velocity</module>
         <module>spigot</module>
+        <module>universal</module>
     </modules>
 
     <properties>

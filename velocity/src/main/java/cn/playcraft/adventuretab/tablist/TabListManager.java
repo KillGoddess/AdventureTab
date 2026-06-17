@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TabListManager {
 
@@ -36,6 +38,12 @@ public class TabListManager {
 
     private final MiniMessage miniMessage = MiniMessage.builder().strict(false).build();
     private final LegacyComponentSerializer legacySerializer = LegacyComponentSerializer.legacyAmpersand();
+
+    private static final Pattern SECTION_HEX_PATTERN = Pattern.compile("(?i)[&§]x((?:[&§][0-9a-f]){6})");
+    private static final Pattern HEX_PATTERN = Pattern.compile("(?i)(?<![<:])[&§]?#([0-9a-f]{6})");
+    private static final Pattern BRACED_HEX_PATTERN = Pattern.compile("(?i)[&§]?\\{\\s*#([0-9a-f]{6})\\s*}");
+    private static final Pattern RGB_PATTERN = Pattern.compile("[&§]?\\{\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*}");
+    private static final Pattern LEGACY_PATTERN = Pattern.compile("(?i)[&§]([0-9a-fk-or])");
 
     // Legacy &色码 → MiniMessage 标签 映射
     private static final Map<Character, String> LEGACY_TO_MM;
@@ -344,15 +352,14 @@ public class TabListManager {
 
     private Component parseComponent(String input) {
         try {
-            boolean hasLegacy = input.contains("&") || input.contains("§");
+            boolean hasColorMarkup = hasColorMarkup(input);
             boolean hasMM = input.contains("<") && input.contains(">");
 
-            if (hasLegacy) {
-                // 统一转为 MiniMessage 格式
+            if (hasColorMarkup) {
                 input = convertLegacyToMiniMessage(input);
             }
 
-            if (hasLegacy || hasMM) {
+            if (hasColorMarkup || hasMM) {
                 // MiniMessage (non-strict) 解析，未知标签会渲染为文本
                 return miniMessage.deserialize(input);
             }
@@ -368,32 +375,48 @@ public class TabListManager {
         }
     }
 
-    /**
-     * 将 legacy &色码/§色码 转换为 MiniMessage 标签
-     */
+    private boolean hasColorMarkup(String input) {
+        return LEGACY_PATTERN.matcher(input).find()
+                || HEX_PATTERN.matcher(input).find()
+                || SECTION_HEX_PATTERN.matcher(input).find()
+                || BRACED_HEX_PATTERN.matcher(input).find()
+                || RGB_PATTERN.matcher(input).find();
+    }
+
     private String convertLegacyToMiniMessage(String input) {
-        StringBuilder sb = new StringBuilder(input.length());
-        for (int i = 0; i < input.length(); i++) {
-            char c = input.charAt(i);
-            if ((c == '&' || c == '§') && i + 1 < input.length()) {
-                char next = Character.toLowerCase(input.charAt(i + 1));
-                // &# hex 色码: &#RRGGBB
-                if (next == '#' && i + 7 < input.length()) {
-                    String hex = input.substring(i + 2, i + 8);
-                    sb.append("<color:#").append(hex).append(">");
-                    i += 7;
-                    continue;
-                }
-                String mm = LEGACY_TO_MM.get(next);
-                if (mm != null) {
-                    sb.append(mm);
-                    i++;
-                    continue;
-                }
-            }
-            sb.append(c);
+        String output = replaceMatches(input, BRACED_HEX_PATTERN, matcher -> "<#" + matcher.group(1) + ">");
+        output = replaceMatches(output, RGB_PATTERN, matcher -> {
+            int red = clampColor(Integer.parseInt(matcher.group(1)));
+            int green = clampColor(Integer.parseInt(matcher.group(2)));
+            int blue = clampColor(Integer.parseInt(matcher.group(3)));
+            return String.format("<#%02x%02x%02x>", red, green, blue);
+        });
+        output = replaceMatches(output, HEX_PATTERN, matcher -> "<#" + matcher.group(1) + ">");
+        output = replaceMatches(output, SECTION_HEX_PATTERN, matcher -> "<#" + matcher.group(1).replace("&", "").replace("§", "") + ">");
+        output = replaceMatches(output, LEGACY_PATTERN, matcher -> {
+            String mm = LEGACY_TO_MM.get(Character.toLowerCase(matcher.group(1).charAt(0)));
+            return mm != null ? mm : matcher.group();
+        });
+        return output;
+    }
+
+    private String replaceMatches(String input, Pattern pattern, MatchReplacer replacer) {
+        Matcher matcher = pattern.matcher(input);
+        StringBuffer output = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(output, Matcher.quoteReplacement(replacer.replace(matcher)));
         }
-        return sb.toString();
+        matcher.appendTail(output);
+        return output.toString();
+    }
+
+    private int clampColor(int value) {
+        return Math.max(0, Math.min(255, value));
+    }
+
+    @FunctionalInterface
+    private interface MatchReplacer {
+        String replace(Matcher matcher);
     }
 
     public void removePlayer(UUID uuid) {

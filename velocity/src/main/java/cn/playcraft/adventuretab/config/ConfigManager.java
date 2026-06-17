@@ -86,7 +86,7 @@ public class ConfigManager {
         try {
             Path configFile = dataDirectory.resolve("config.yml");
             if (!Files.exists(configFile)) {
-                saveDefault(configFile, "config.yml");
+                saveDefault(configFile, "velocity-config.yml");
             }
 
             Yaml yaml = new Yaml();
